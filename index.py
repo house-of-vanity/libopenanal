@@ -33,7 +33,11 @@ def serve_static(path):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', users=db.get_users())
+
+@app.route('/users_overview')
+def users_overview():
+    return render_template('users_overview.html')
 
 
 def main():

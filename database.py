@@ -29,6 +29,9 @@ class DataBase:
         sql = "SELECT * FROM `meme` ORDER BY rowid DESC "
         return(self.execute(sql))
 
+    def get_users(self):
+        sql = "SELECT * FROM `user`"
+        return(self.execute(sql))
 
     def close(self):
         self.conn.close()
