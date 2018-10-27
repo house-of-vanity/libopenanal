@@ -33,7 +33,9 @@ def serve_static(path):
 
 @app.route('/')
 def index():
-    return render_template('index.html', users=db.get_users())
+    order = request.args.get('order', default = 'id', type = str)
+    sorting = request.args.get('sorting', default = 'ASC', type = str)
+    return render_template('index.html', users=db.get_users(order=order, sorting=sorting), sorting=sorting)
 
 @app.route('/users_overview')
 def users_overview():

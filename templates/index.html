@@ -1,56 +1,73 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>libOpenAnal appliance</title>
-  </head>
-  <body>
-    <h1>Hexor's conf_bot data extractor tool</h1>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+    crossorigin="anonymous">
 
-<ul class="nav">
-  <li class="nav-item">
-    <a class="nav-link active" href="#">Users overview</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="#">Link</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="#">Link</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link disabled" href="#">Disabled</a>
-  </li>
-</ul>
-<table class="table table-hover">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">First</th>
-      <th scope="col">Last</th>
-      <th scope="col">Username</th>
-    </tr>
-  </thead>
-  <tbody>
-  </tbody>
-</table>
-{% for user in users %}
-    <tr>
-      <th scope="row">1</th>
-      <td>{{ user.1 }}</td>
-      <td>{{ user.2 }}</td>
-      <td>{{ user.0 }}</td>
-    </tr>
-{% endfor %}
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-  </body>
+  <title>libOpenAnal appliance</title>
+</head>
+
+<body>
+  <h1>Hexor's conf_bot data extractor tool</h1>
+
+  <ul class="nav">
+    <li class="nav-item">
+      <a class="nav-link active" href="#">Users overview</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Link</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Link</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link disabled" href="#">Disabled</a>
+    </li>
+  </ul>
+
+
+
+  <table class="table table-hover table-sm">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col"><a href="./?order=first_name&sorting={%- if sorting == 'ASC' -%}DESC{%- else -%}ASC{%- endif -%}">First
+            name</a></th>
+        <th scope="col"><a href="./?order=last_name&sorting={%- if sorting == 'ASC' -%}DESC{%- else -%}ASC{%- endif -%}">Last name</a></th>
+        <th scope="col"><a href="./?order=username&sorting={%- if sorting == 'ASC' -%}DESC{%- else -%}ASC{%- endif -%}">Username</a></th>
+        <th scope="col"><a href="./?order=id&sorting={%- if sorting == 'ASC' -%}DESC{%- else -%}ASC{%- endif -%}">User ID</a></th>
+        <th scope="col"><a href="./?order=firstly_seen&sorting={%- if sorting == 'ASC' -%}DESC{%- else -%}ASC{%- endif -%}">Firstly seen</a></th>
+        <th scope="col"><a href="./?order=last_activity&sorting={%- if sorting == 'ASC' -%}DESC{%- else -%}ASC{%- endif -%}">Last activity</a></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for user in users %}
+      <tr>
+        <th scope="row">{{loop.index}}</th>
+        <td>{{ user.2 }}</td>
+        <td>{{ user.3 }}</td>
+        <td>{{ user.1 }}</td>
+        <td>{{ user.0 }}</td>
+        <td>{{ user.4 }}</td>
+        <td>{{ user.5 }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+    crossorigin="anonymous"></script>
+</body>
+
 </html>
