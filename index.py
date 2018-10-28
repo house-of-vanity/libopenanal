@@ -1,5 +1,3 @@
-#import passlib
-#import sqlite3
 import logging
 from flask import Flask, request, send_from_directory
 from flask import render_template

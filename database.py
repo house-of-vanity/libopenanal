@@ -143,8 +143,18 @@ class DataBase:
             LEFT JOIN `conf` c ON c.id = r.conf_id
             WHERE u.id = %s
             GROUP BY c.id""" % user_id)
-
-        day_known = (parser.parse(raw1[6]) - parser.parse(raw1[4])).days
+        avg_lenght = self.execute("""
+            SELECT count(date) as words 
+            FROM `relations`
+            WHERE user_id = %s
+            GROUP BY date""" % user_id)
+        avg = 0
+        for i in avg_lenght:
+            avg += i[0]
+        avg = avg / len(avg_lenght)
+        day_known = (datetime.now() - parser.parse(raw1[4])).days
+        if not day_known:
+            day_known = 1
         user_info = {
             'id': raw1[0],
             'first_name': raw1[1],
@@ -156,6 +166,7 @@ class DataBase:
             'day_known': day_known,
             'top': top,
             'chats': chats,
+            'avg': avg,
         }
         return user_info
 
