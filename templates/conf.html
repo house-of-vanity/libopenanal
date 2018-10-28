@@ -31,6 +31,8 @@
         <a class="nav-link disabled" href="#">Disabled</a>
       </li>
     </ul>
+
+
     <div class="row">
       <div class="col-sm-12">
         <h4>Totals</h4>
@@ -45,32 +47,22 @@
       <thead>
         <tr>
           <th scope="col">#</th>
-          <th scope="col"><a href="./?order=first_name&sorting={%- if sorting == 'ASC' -%}DESC{%- else -%}ASC{%- endif -%}">First
-              name</a></th>
-          <th scope="col"><a href="./?order=last_name&sorting={%- if sorting == 'ASC' -%}DESC{%- else -%}ASC{%- endif -%}">Last
-              name</a></th>
-          <th scope="col"><a href="./?order=username&sorting={%- if sorting == 'ASC' -%}DESC{%- else -%}ASC{%- endif -%}">Username</a></th>
-          <th scope="col"><a href="./?order=id&sorting={%- if sorting == 'ASC' -%}DESC{%- else -%}ASC{%- endif -%}">User
-              ID</a></th>
-          <th scope="col"><a href="./?order=firstly_seen&sorting={%- if sorting == 'ASC' -%}DESC{%- else -%}ASC{%- endif -%}">Firstly
-              seen</a></th>
-          <th scope="col"><a href="./?order=last_activity&sorting={%- if sorting == 'ASC' -%}DESC{%- else -%}ASC{%- endif -%}">Last
-              activity</a></th>
-          <th scope="col"><a href="./?order=count&sorting={%- if sorting == 'ASC' -%}DESC{%- else -%}ASC{%- endif -%}">Word
-              count</a></th>
+          <th scope="col">Title</th>
+          <th scope="col">ID</th>
+          <th scope="col">Added</th>
+          <th scope="col">Members</th>
+          <th scope="col">Words said</th>
         </tr>
       </thead>
       <tbody>
-        {% for user in users %}
+        {% for conf in confs %}
         <tr>
           <th scope="row">{{loop.index}}</th>
-          <td><a href="/overview/user/{{ user.0 }}">{{ user.2 }}</a></td>
-          <td>{{ user.3 }}</td>
-          <td>{{ user.1 }}</td>
-          <td><a class="badge badge-dark " href="/overview/user/{{ user.0 }}">{{ user.0 }}</a></td>
-          <td>{{ user.4 }}</td>
-          <td>{{ user.5 }}</td>
-          <td>{{ user.6 }}</td>
+          <td>{{ conf.0 }}</td>
+          <td>{{ conf.1 }}</td>
+          <td>{{ conf.2 }}</td>
+          <td>{{ conf.4 }}</td>
+          <td>{{ conf.3 }}</td>
         </tr>
         {% endfor %}
       </tbody>

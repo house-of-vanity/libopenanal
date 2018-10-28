@@ -35,11 +35,46 @@ def serve_static(path):
 def index():
     order = request.args.get('order', default = 'id', type = str)
     sorting = request.args.get('sorting', default = 'ASC', type = str)
-    return render_template('index.html', users=db.get_users(order=order, sorting=sorting), sorting=sorting)
+    totals = {
+        'users': db.get_user_count(),
+        'words': db.get_word_count(),
+        'relations': db.get_relations_count(),
+        'confs': db.get_confs_count()
+    }
+    return render_template(
+        'index.html',
+        users=db.get_users(order=order, sorting=sorting),
+        sorting=sorting,
+        totals=totals
+        )
 
-@app.route('/users_overview')
-def users_overview():
-    return render_template('users_overview.html')
+@app.route('/conf')
+def conf():
+    totals = {
+        'users': db.get_user_count(),
+        'words': db.get_word_count(),
+        'relations': db.get_relations_count(),
+        'confs': db.get_confs_count()
+    }
+
+    return render_template(
+        'conf.html',
+        confs=db.get_confs(),
+        totals=totals)
+
+@app.route('/overview/user/<user_id>')
+def user_overview(user_id):
+    totals = {
+        'users': db.get_user_count(),
+        'words': db.get_word_count(),
+        'relations': db.get_relations_count(),
+        'confs': db.get_confs_count()
+    }
+
+    return render_template(
+        'user.html',
+        user_info=db.get_user_info(user_id),
+        totals=totals)
 
 
 def main():
