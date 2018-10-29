@@ -65,8 +65,8 @@
         <tr>
           <th scope="row">{{loop.index}}</th>
           <td><a href="/overview/user/{{ user.0 }}">{{ user.2 }}</a></td>
-          <td>{{ user.3 }}</td>
-          <td>{{ user.1 }}</td>
+          <td>{% if user.3 != '_null' %}{{ user.3 }}{% else %}<span class="badge badge-warning">N/D</span>{% endif %}</td>
+          <td>{% if user.1 != '_null' %}{{ user.1 }}{% else %}<span class="badge badge-warning">N/D</span>{% endif %}</td>
           <td><a class="badge badge-dark " href="/overview/user/{{ user.0 }}">{{ user.0 }}</a></td>
           <td>{{ user.4 }}</td>
           <td>{{ user.5 }}</td>
