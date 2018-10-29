@@ -151,7 +151,10 @@ class DataBase:
         avg = 0
         for i in avg_lenght:
             avg += i[0]
-        avg = avg / len(avg_lenght)
+        if len(avg_lenght) != 0:
+            avg = avg / len(avg_lenght)
+        else:
+            avg = 0
         day_known = (datetime.now() - parser.parse(raw1[4])).days
         if not day_known:
             day_known = 1

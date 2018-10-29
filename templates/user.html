@@ -32,7 +32,7 @@
             </li>
         </ul>
         <hr>
-        <h4>{{ user_info.username }} user's data</h4>
+        <h4>{{ user_info.first_name }} user's data</h4>
         <hr>
         <div class="card-columns">
             <div class="card">
@@ -41,8 +41,8 @@
                     <hr>
                     <p class="card-text">
                         <b>First name: </b>{{ user_info.first_name }}<br>
-                        <b>Last name: </b>{{user_info.last_name }}<br>
-                        <b>Username: </b>{{user_info.username }}<br>
+                        <b>Last name: </b>{% if user_info.last_name != '_null' %}{{ user_info.last_name }}{% else %}<span class="badge badge-warning">N/D</span>{% endif %}<br>
+                        <b>Username: </b>{% if user_info.username != '_null' %}{{ user_info.username }}{% else %}<span class="badge badge-warning">N/D</span>{% endif %}<br>
                         <b>Telegram ID: </b>{{user_info.id }}<br>
                         <b>Firstly seen: </b>{{user_info.first_date }}<br>
                     </p>
