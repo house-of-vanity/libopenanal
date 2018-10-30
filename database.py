@@ -141,17 +141,35 @@ class DataBase:
             """ % user_id)
         chats = self.execute("""SELECT c.title,
             count(c.id) count,
-            min(date(r.date, 'unixepoch'))
+            min(date(r.date, 'unixepoch')),
+			m.messages
             FROM `relations` r 
             LEFT JOIN `user` u ON u.id = r.user_id
             LEFT JOIN `conf` c ON c.id = r.conf_id
+			LEFT JOIN (
+				SELECT COUNT(messages) as messages, title FROM (
+                    SELECT COUNT(r.date) AS messages, c.title
+                    FROM `relations` r
+                    LEFT JOIN `conf` c ON c.id = r.conf_id
+                    WHERE user_id = %s
+                    GROUP BY c.title, r.date
+                ) GROUP BY title
+			) m ON c.title = m.title
             WHERE u.id = %s
-            GROUP BY c.id""" % user_id)
+            GROUP BY c.id""" % (user_id, user_id))
+
         avg_lenght = self.execute("""
             SELECT count(date) as words 
             FROM `relations`
             WHERE user_id = %s
             GROUP BY date""" % user_id)
+        messages = self.execute("""
+        SELECT count(*) FROM(
+                SELECT count(date) as words 
+                FROM `relations`
+                WHERE user_id = %s
+                GROUP BY date
+            )""" % user_id)
         avg = 0
         for i in avg_lenght:
             avg += i[0]
@@ -170,10 +188,12 @@ class DataBase:
             'first_date': raw1[4],
             'word_count': raw1[5],
             'last_message': raw1[6],
+            'messages': messages[0][0],
             'day_known': day_known,
             'top': top,
             'chats': chats,
             'avg': avg,
+
         }
         return user_info
 

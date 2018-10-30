@@ -47,6 +47,7 @@
                 <b>Last message: </b>{{ user_info.last_message }}<br>
                 <b>Days known: </b>{{ user_info.day_known }}<br>
                 <b>Word said: </b>{{ user_info.word_count }}<br>
+                <b>Messages sent: </b>{{ user_info.messages }}<br>
                 <b>Words per day: </b>{{ '%0.2f'| format((user_info.word_count / user_info.day_known)|float) }}<br>
                 <b>Words per message: </b>~{{ '%0.2f'| format(user_info.avg|float) }}<br>
             </p>
@@ -95,7 +96,8 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Chat</th>
-                    <th scope="col">Words said</th>
+                    <th scope="col">Words</th>
+                    <th scope="col">Messages</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -104,6 +106,7 @@
                         <th scope="row">{{ loop.index }}</th>
                         <td>{{ chat[0] }}</td>
                         <td><span class="badge badge-secondary">{{ chat[1] }} </span></td>
+                        <td><span class="badge badge-secondary">{{ chat[3] }} </span></td>
                     </tr>
                 {% endfor %}
                 </tbody>
