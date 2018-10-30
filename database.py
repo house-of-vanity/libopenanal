@@ -65,9 +65,9 @@ class DataBase:
         elif order == 'username':
             pass
         elif order == 'firstly_seen':
-            pass
+            order = 'dt'
         elif order == 'last_activity':
-            pass
+            order = 'last_seen'
         elif order == 'count':
             pass
         else:
