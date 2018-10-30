@@ -1,7 +1,9 @@
+import logging
 import sqlite3
 from datetime import datetime
+
 from dateutil import parser
-import logging
+
 
 class DataBase:
     def __init__(self, basefile):
@@ -12,7 +14,6 @@ class DataBase:
                 check_same_thread=False)
         except:
             self.log.info('Could not connect to DataBase.')
-            return None
 
     def execute(self, sql):
         cursor = self.conn.cursor()
@@ -25,50 +26,53 @@ class DataBase:
         VALUES ('%s')" % word
         self.execute(sql)
         sql = "SELECT id FROM word WHERE word = '%s'" % word
-        return(self.execute(sql)[0][0])
+        return self.execute(sql)[0][0]
 
+    '''
     def get_memes(self, offset=0):
         sql = "SELECT * FROM `meme` ORDER BY rowid DESC "
-        return(self.execute(sql))
+        return self.execute(sql)
+    '''
 
     def get_user_count(self):
         sql = "SELECT count(*) FROM `user`"
-        return(self.execute(sql)[0])
+        return self.execute(sql)[0]
 
     def get_word_count(self):
         sql = "SELECT count(*) FROM `word`"
-        return(self.execute(sql)[0])
+        return self.execute(sql)[0]
 
     def get_relations_count(self):
         sql = "SELECT count(*) FROM `relations`"
-        return(self.execute(sql)[0])
+        return self.execute(sql)[0]
 
     def get_confs_count(self):
         sql = "SELECT count(*) FROM `conf`"
-        return(self.execute(sql)[0])
+        return self.execute(sql)[0]
 
     def get_users(self, order='id', sorting='ASC'):
         # sql injection prevention
         if sorting == 'ASC':
-            sorting = 'ASC'
+            pass
         else:
             sorting = 'DESC'
         if order == 'id':
-            order = 'id'
+            pass
         elif order == 'first_name':
-            order = 'first_name'
+            pass
         elif order == 'last_name':
-            order == 'last_name'
+            pass
         elif order == 'username':
-            order = 'username'
+            pass
         elif order == 'firstly_seen':
-            order = 'dt'
+            pass
         elif order == 'last_activity':
-            order = 'last_seen'
+            pass
         elif order == 'count':
-            order = 'count'
+            pass
         else:
             order = 'id'
+
         sql = """
         SELECT * FROM (
             SELECT u.id,
@@ -84,7 +88,7 @@ class DataBase:
         )
          ORDER BY %s %s""" % (
             order, sorting)
-        return(self.execute(sql))
+        return self.execute(sql)
 
     def get_confs(self):
         sql = """
@@ -110,7 +114,7 @@ class DataBase:
             ON t1.id = c.id
             GROUP BY c.id
         """
-        return(self.execute(sql))
+        return self.execute(sql)
 
     def get_user_info(self, user_id):
         if not user_id.isdigit():

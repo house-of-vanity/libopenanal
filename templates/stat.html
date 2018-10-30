@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+    {{ super() }}
+    <ul class="nav nav-pills">
+        <li class="nav-item">
+            <a class="nav-link" href="/">Users</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/conf">Conferences</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="/stat">2ch.hk Stats</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link disabled" href="#">Disabled</a>
+        </li>
+    </ul>
+    <br>
+    <form action="/" method="get">
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Board" aria-label="Board"
+                   aria-describedby="button-stat" name="board">
+            <div class="input-group-append">
+                <button class="btn btn-primary" type="submit" id="button-stat">Get stat</button>
+            </div>
+        </div>
+    </form>
+    <div class="row">
+        <div class="col-sm-12">
+            <h4>Info</h4>
+            <b>Board: </b> {{ board }}<br>
+            <b>Threads: </b> {{ threads|length }}<br>
+            <b>Total posts: </b> {{ posts }}<br>
+        </div>
+    </div>
+    <br>
+    <table class="table table-hover table-sm">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Subject</th>
+            <th scope="col"><a
+                    href="./stat?board={{ board }}&order=posts&sorting={%- if sorting == 'ASC' -%}DESC{%- else -%}ASC{%- endif -%}">Posts</a>
+            </th>
+            <th scope="col"><a
+                    href="./stat?board={{ board }}&order=views&sorting={%- if sorting == 'ASC' -%}DESC{%- else -%}ASC{%- endif -%}">Views</a>
+            </th>
+            <th scope="col"><a
+                    href="./stat?board={{ board }}&order=score&sorting={%- if sorting == 'ASC' -%}DESC{%- else -%}ASC{%- endif -%}">Score</a>
+            </th>
+            <th scope="col"><a
+                    href="./stat?board={{ board }}&order=timestamp&sorting={%- if sorting == 'ASC' -%}DESC{%- else -%}ASC{%- endif -%}">Created</a>
+            </th>
+            <th scope="col"><a
+                    href="./stat?board={{ board }}&order=lasthit&sorting={%- if sorting == 'ASC' -%}DESC{%- else -%}ASC{%- endif -%}">Lasthit</a>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for thread in threads %}
+            <tr>
+                <th scope="row">{{ loop.index }}</th>
+                <td><a href="https://2ch.hk/b/res/{{ thread['num'] }}.html">{{ thread['subject'] }}</a></td>
+                <td>{{ thread['posts_count'] }}</td>
+                <td>{{ thread['views'] }}</td>
+                <td>{{ "%.2f"|format(thread['score']|float) }}</td>
+                <td>{{ thread['timestamp'] | time }}</td>
+                <td>{{ thread['lasthit'] | time }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+{% block scripts %}
+    {{ super() }}
+{% endblock %}
