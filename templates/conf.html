@@ -1,37 +1,36 @@
 {% extends "base.html" %}
 {% block head %}
-    {{ super() }}
+{{ super() }}
 {% endblock %}
 {% block content %}
-    {{ super() }}
-    <ul class="nav nav-pills">
-        <li class="nav-item">
-            <a class="nav-link" href="/">Users</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link active" href="/conf">Conferences</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="/stat">2ch.hk Stats</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link disabled" href="#">Disabled</a>
-        </li>
-    </ul>
-    <br>
-
-    <div class="row">
-        <div class="col-sm-12">
-            <h4>Totals</h4>
-            <b>Users: </b> {{ totals.users[0] }}<br>
-            <b>Unique words: </b> {{ totals.words[0] }}<br>
-            <b>Words said: </b> {{ totals.relations[0] }}<br>
-            <b>Chats fetched: </b> {{ totals.confs[0] }}<br>
-        </div>
+{{ super() }}
+<ul class="nav nav-pills">
+    <li class="nav-item">
+        <a class="nav-link" href="/">Users</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" href="/conf">Conferences</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/stat">2ch.hk Stats</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link disabled" href="#">Disabled</a>
+    </li>
+</ul>
+<br>
+<div class="row">
+    <div class="col-sm-12">
+        <h4>Summary</h4>
+        <b>Users: </b> {{ totals.users[0] }}<br>
+        <b>Unique words: </b> {{ totals.words[0] }}<br>
+        <b>Words said: </b> {{ totals.relations[0] }}<br>
+        <b>Chats fetched: </b> {{ totals.confs[0] }}<br>
     </div>
+</div>
 
-    <table class="table table-hover table-sm">
-        <thead>
+<table class="table table-hover table-sm">
+    <thead>
         <tr>
             <th scope="col">#</th>
             <th scope="col">Title</th>
@@ -40,21 +39,21 @@
             <th scope="col">Members</th>
             <th scope="col">Words said</th>
         </tr>
-        </thead>
-        <tbody>
+    </thead>
+    <tbody>
         {% for conf in confs %}
-            <tr>
-                <th scope="row">{{ loop.index }}</th>
-                <td>{{ conf.0 }}</td>
-                <td>{{ conf.1 }}</td>
-                <td>{{ conf.2 }}</td>
-                <td>{{ conf.4 }}</td>
-                <td>{{ conf.3 }}</td>
-            </tr>
+        <tr>
+            <th scope="row">{{ loop.index }}</th>
+            <td>{{ conf.0 }}</td>
+            <td>{{ conf.1 }}</td>
+            <td>{{ conf.2 }}</td>
+            <td>{{ conf.4 }}</td>
+            <td>{{ conf.3 }}</td>
+        </tr>
         {% endfor %}
-        </tbody>
-    </table>
+    </tbody>
+</table>
 {% endblock %}
 {% block scripts %}
-    {{ super() }}
+{{ super() }}
 {% endblock %}

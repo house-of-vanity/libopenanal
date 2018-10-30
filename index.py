@@ -1,7 +1,9 @@
 import datetime
 import logging
-
+import os
 import requests
+import time
+
 from flask import Flask, request, send_from_directory
 from flask import render_template
 
@@ -35,7 +37,7 @@ def serve_static(path):
     return send_from_directory('static', path)
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
     order = request.args.get('order', default='id', type=str)
     sorting = request.args.get('sorting', default='ASC', type=str)
@@ -136,11 +138,53 @@ def stat():
         sorting=sorting,
         posts=posts,
         threads=sorted_threads,
+        now=datetime.datetime.now().strftime('%s'),
     )
 
 
 def main():
     app.run(host=flask_host, port=flask_port)
+
+
+@app.template_filter('datetimeformat')
+def datetimeformat(value, format='%H:%M / %d-%m-%Y'):
+    return datetime.datetime.fromtimestamp(value).strftime(format)
+
+
+@app.template_filter('readable_delta')
+def readable_delta(from_seconds, until_seconds=None):
+    # Returns a nice readable delta.
+    def plur(it):
+        try:
+            size = len(it)
+        except TypeError:
+            size = int(it)
+        return '' if size == 1 else 's'
+
+    if not until_seconds:
+        until_seconds = time.time()
+
+    seconds = int(until_seconds) - int(from_seconds)
+    delta = datetime.timedelta(seconds=seconds)
+    delta_minutes = delta.seconds // 60
+    delta_hours = delta_minutes // 60
+
+    if delta.days:
+        return '%d day%s, %d hour%s' % (
+            delta.days,
+            plur(delta.days),
+            (delta_hours),
+            plur(delta_hours))
+    elif delta_hours:
+        return '%d hour%s, %d minute%s' % (
+            delta_hours,
+            plur(delta_hours),
+            (delta_minutes - delta_hours * 60),
+            plur(delta_minutes))
+    elif delta_minutes:
+        return '%d minute%s' % (delta_minutes, plur(delta_minutes))
+    else:
+        return '%d second%s' % (delta.seconds, plur(delta.seconds))
 
 
 if __name__ == '__main__':

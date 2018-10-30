@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block head %}
-    {{ super() }}
+{{ super() }}
 {% endblock %}
 {% block content %}
 {{ super() }}
@@ -58,59 +58,59 @@
             <h5 class="card-title">Top</h5>
             <hr>
             <p class="card-text">
-            <table class="table table-hover table-sm">
-                <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Word</th>
-                    <th scope="col">Said</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for word in user_info.top %}
-                    <tr>
-                        <th scope="row">{{ loop.index }}</th>
-                        <td>{{ word[0] }}</td>
-                        {% if not loop.last %}
+                <table class="table table-hover table-sm">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Word</th>
+                            <th scope="col">Said</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for word in user_info.top %}
+                        <tr>
+                            <th scope="row">{{ loop.index }}</th>
+                            <td>{{ word[0] }}</td>
+                            {% if not loop.last %}
                             {% if (word[1]/loop.nextitem[1]) > 2 %}
-                                <td><span class="badge badge-danger" data-toggle="tooltip" data-placement="right"
-                                          title="Must have been abused">{{ word[1] }} </span></td>
+                            <td><span class="badge badge-danger" data-toggle="tooltip" data-placement="right" title="Must have been abused">{{
+                                    word[1] }} </span></td>
                             {% else %}
-                                <td><span class="badge badge-secondary">{{ word[1] }} </span></td>
-                            {% endif %}
-                        {% else %}
                             <td><span class="badge badge-secondary">{{ word[1] }} </span></td>
-                        {% endif %}
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+                            {% endif %}
+                            {% else %}
+                            <td><span class="badge badge-secondary">{{ word[1] }} </span></td>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
         </div>
     </div>
     <div class="card">
         <div class="card-body">
             <h5 class="card-title">Chats</h5>
             <p class="card-text">
-            <table class="table table-hover table-sm">
-                <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Chat</th>
-                    <th scope="col">Words</th>
-                    <th scope="col">Messages</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for chat in user_info.chats %}
-                    <tr>
-                        <th scope="row">{{ loop.index }}</th>
-                        <td>{{ chat[0] }}</td>
-                        <td><span class="badge badge-secondary">{{ chat[1] }} </span></td>
-                        <td><span class="badge badge-secondary">{{ chat[3] }} </span></td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+                <table class="table table-hover table-sm">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Chat</th>
+                            <th scope="col">Words</th>
+                            <th scope="col">Messages</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for chat in user_info.chats %}
+                        <tr>
+                            <th scope="row">{{ loop.index }}</th>
+                            <td>{{ chat[0] }}</td>
+                            <td><span class="badge badge-secondary">{{ chat[1] }} </span></td>
+                            <td><span class="badge badge-secondary">{{ chat[3] }} </span></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
         </div>
     </div>
 </div>

@@ -1,78 +1,72 @@
 {% extends "base.html" %}
 {% block head %}
-    {{ super() }}
+{{ super() }}
 {% endblock %}
 {% block content %}
-    {{ super() }}
-    <ul class="nav nav-pills">
-        <li class="nav-item">
-            <a class="nav-link active" href="/">Users</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="/conf">Conferences</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="/stat">2ch.hk Stats</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link disabled" href="#">Disabled</a>
-        </li>
-    </ul>
-    <br>
-    <div class="row">
-        <div class="col-sm-12">
-            <h4>Totals</h4>
-            <b>Users: </b> {{ totals.users[0] }}<br>
-            <b>Unique words: </b> {{ totals.words[0] }}<br>
-            <b>Words said: </b> {{ totals.relations[0] }}<br>
-            <b>Chats fetched: </b> {{ totals.confs[0] }}<br>
-        </div>
+{{ super() }}
+<ul class="nav nav-pills">
+    <li class="nav-item">
+        <a class="nav-link active" href="/">Users</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/conf">Conferences</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/stat">2ch.hk Stats</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link disabled" href="#">Disabled</a>
+    </li>
+</ul>
+<br>
+<div class="row">
+    <div class="col-sm-12">
+        <h4>Summary</h4>
+        <b>Users: </b> {{ totals.users[0] }}<br>
+        <b>Unique words: </b> {{ totals.words[0] }}<br>
+        <b>Words said: </b> {{ totals.relations[0] }}<br>
+        <b>Chats fetched: </b> {{ totals.confs[0] }}<br>
     </div>
-    <br>
-    <table class="table table-hover table-sm">
-        <thead>
+</div>
+<br>
+<table class="table table-hover table-sm">
+    <thead>
         <tr>
             <th scope="col">#</th>
-            <th scope="col"><a
-                    href="./?order=first_name&sorting={%- if sorting == 'ASC' -%}DESC{%- else -%}ASC{%- endif -%}">First
-                name</a></th>
-            <th scope="col"><a
-                    href="./?order=last_name&sorting={%- if sorting == 'ASC' -%}DESC{%- else -%}ASC{%- endif -%}">Last
-                name</a></th>
-            <th scope="col"><a
-                    href="./?order=username&sorting={%- if sorting == 'ASC' -%}DESC{%- else -%}ASC{%- endif -%}">Username</a>
+            <th scope="col"><a href="./?order=first_name&sorting={%- if sorting == 'ASC' -%}DESC{%- else -%}ASC{%- endif -%}">First
+                    name</a></th>
+            <th scope="col"><a href="./?order=last_name&sorting={%- if sorting == 'ASC' -%}DESC{%- else -%}ASC{%- endif -%}">Last
+                    name</a></th>
+            <th scope="col"><a href="./?order=username&sorting={%- if sorting == 'ASC' -%}DESC{%- else -%}ASC{%- endif -%}">Username</a>
             </th>
             <th scope="col"><a href="./?order=id&sorting={%- if sorting == 'ASC' -%}DESC{%- else -%}ASC{%- endif -%}">User
-                ID</a></th>
-            <th scope="col"><a
-                    href="./?order=firstly_seen&sorting={%- if sorting == 'ASC' -%}DESC{%- else -%}ASC{%- endif -%}">Firstly
-                seen</a></th>
-            <th scope="col"><a
-                    href="./?order=last_activity&sorting={%- if sorting == 'ASC' -%}DESC{%- else -%}ASC{%- endif -%}">Last
-                activity</a></th>
-            <th scope="col"><a
-                    href="./?order=count&sorting={%- if sorting == 'ASC' -%}DESC{%- else -%}ASC{%- endif -%}">Word
-                count</a></th>
+                    ID</a></th>
+            <th scope="col"><a href="./?order=firstly_seen&sorting={%- if sorting == 'ASC' -%}DESC{%- else -%}ASC{%- endif -%}">Firstly
+                    seen</a></th>
+            <th scope="col"><a href="./?order=last_activity&sorting={%- if sorting == 'ASC' -%}DESC{%- else -%}ASC{%- endif -%}">Last
+                    activity</a></th>
+            <th scope="col"><a href="./?order=count&sorting={%- if sorting == 'ASC' -%}DESC{%- else -%}ASC{%- endif -%}">Word
+                    count</a></th>
         </tr>
-        </thead>
-        <tbody>
+    </thead>
+    <tbody>
         {% for user in users %}
-            <tr>
-                <th scope="row">{{ loop.index }}</th>
-                <td><a href="/overview/user/{{ user.0 }}">{{ user.2 }}</a></td>
-                <td>{% if user.3 != '_null' %}{{ user.3 }}{% else %}
-                    <span class="badge badge-warning">N/D</span>{% endif %}</td>
-                <td>{% if user.1 != '_null' %}{{ user.1 }}{% else %}
-                    <span class="badge badge-warning">N/D</span>{% endif %}</td>
-                <td><a class="badge badge-dark " href="/overview/user/{{ user.0 }}">{{ user.0 }}</a></td>
-                <td>{{ user.4 }}</td>
-                <td>{{ user.5 }}</td>
-                <td>{{ user.6 }}</td>
-            </tr>
+        <tr>
+            <th scope="row">{{ loop.index }}</th>
+            <td><a href="/overview/user/{{ user.0 }}">{{ user.2 }}</a></td>
+            <td>{% if user.3 != '_null' %}{{ user.3 }}{% else %}
+                <span class="badge badge-warning">N/D</span>{% endif %}</td>
+            <td>{% if user.1 != '_null' %}{{ user.1 }}{% else %}
+                <span class="badge badge-warning">N/D</span>{% endif %}</td>
+            <td><a class="badge badge-dark " href="/overview/user/{{ user.0 }}">{{ user.0 }}</a></td>
+            <td>{{ user.4 }}</td>
+            <td>{{ user.5 }}</td>
+            <td>{{ user.6 }}</td>
+        </tr>
         {% endfor %}
-        </tbody>
-    </table>
+    </tbody>
+</table>
 {% endblock %}
 {% block scripts %}
-    {{ super() }}
+{{ super() }}
 {% endblock %}
