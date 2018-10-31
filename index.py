@@ -69,20 +69,19 @@ def conf():
         confs=db.get_confs(),
         totals=totals)
 
+@app.route('/overview/conf/<conf_id>')
+def conf_overview(conf_id):
+
+    return render_template(
+        'conf_details.html',
+        conf_info=db.get_conf_info(conf_id))
 
 @app.route('/overview/user/<user_id>')
 def user_overview(user_id):
-    totals = {
-        'users': db.get_user_count(),
-        'words': db.get_word_count(),
-        'relations': db.get_relations_count(),
-        'confs': db.get_confs_count()
-    }
 
     return render_template(
         'user.html',
-        user_info=db.get_user_info(user_id),
-        totals=totals)
+        user_info=db.get_user_info(user_id))
 
 
 def get_threads(board):

@@ -44,7 +44,7 @@
         {% for conf in confs %}
         <tr>
             <th scope="row">{{ loop.index }}</th>
-            <td>{{ conf.0 }}</td>
+            <td><a href="/overview/conf/{{conf.1}}">{{ conf.0 }}</a></td>
             <td>{{ conf.1 }}</td>
             <td>{{ conf.2 }}</td>
             <td>{{ conf.4 }}</td>

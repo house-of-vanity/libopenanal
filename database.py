@@ -97,16 +97,16 @@ class DataBase:
             date(c.date, 'unixepoch') as dt,
             count(r.conf_id) as count,
             t1.users
-            FROM `conf` c 
-            LEFT JOIN `relations` r 
+            FROM `conf` c
+            LEFT JOIN `relations` r
             ON c.id = r.conf_id
             LEFT JOIN `user` u
             ON u.id = r.user_id
             LEFT JOIN (
                 SELECT id, title, count(user_id) as users FROM (
                 SELECT c.id, c.title, r.user_id, count(r.conf_id) as words
-                FROM `conf` c 
-                LEFT JOIN `relations` r 
+                FROM `conf` c
+                LEFT JOIN `relations` r
                 ON c.id = r.conf_id
                 GROUP BY c.id, r.user_id
             )
@@ -115,6 +115,43 @@ class DataBase:
             GROUP BY c.id
         """
         return self.execute(sql)
+
+    def get_conf_info(self, conf_id):
+        if not conf_id[1:].isdigit():
+            return False
+        raw1 = self.execute("""
+            SELECT c.title,
+            c.id,
+            date(c.date, 'unixepoch') as dt,
+            count(r.conf_id) as count,
+            t1.users
+            FROM `conf` c
+            LEFT JOIN `relations` r
+            ON c.id = r.conf_id
+            LEFT JOIN `user` u
+            ON u.id = r.user_id
+            LEFT JOIN (
+                SELECT id, title, count(user_id) as users FROM (
+                SELECT c.id, c.title, r.user_id, count(r.conf_id) as words
+                FROM `conf` c
+                LEFT JOIN `relations` r
+                ON c.id = r.conf_id
+                GROUP BY c.id, r.user_id
+            )
+            GROUP BY title) as t1
+            ON t1.id = c.id
+            WHERE c.id = '%s'
+            GROUP BY c.id
+        """ % conf_id)[0]
+        print(raw1)
+        conf_info = {
+            'title': raw1[0],
+            'id': raw1[1],
+            'date': raw1[2],
+            'word_count': raw1[3],
+            'users_cunt': raw1[4],
+        }
+        return conf_info
 
     def get_user_info(self, user_id):
         if not user_id.isdigit():
@@ -131,7 +168,7 @@ class DataBase:
             LEFT JOIN `relations` r ON r.user_id = u.id
             WHERE u.id = %s""" % user_id)[0]
         top = self.execute("""
-            SELECT w.word, count(w.id) as count FROM `relations` r 
+            SELECT w.word, count(w.id) as count FROM `relations` r
             LEFT JOIN `user` u ON u.id = r.user_id
             LEFT JOIN `word` w ON w.id = r.word_id
             WHERE u.id = %s
@@ -143,7 +180,7 @@ class DataBase:
             count(c.id) count,
             min(date(r.date, 'unixepoch')),
 			m.messages
-            FROM `relations` r 
+            FROM `relations` r
             LEFT JOIN `user` u ON u.id = r.user_id
             LEFT JOIN `conf` c ON c.id = r.conf_id
 			LEFT JOIN (
@@ -159,13 +196,13 @@ class DataBase:
             GROUP BY c.id""" % (user_id, user_id))
 
         avg_lenght = self.execute("""
-            SELECT count(date) as words 
+            SELECT count(date) as words
             FROM `relations`
             WHERE user_id = %s
             GROUP BY date""" % user_id)
         messages = self.execute("""
         SELECT count(*) FROM(
-                SELECT count(date) as words 
+                SELECT count(date) as words
                 FROM `relations`
                 WHERE user_id = %s
                 GROUP BY date

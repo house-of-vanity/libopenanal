@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+{% block content %}
+{{ super() }}
+<ul class="nav nav-pills">
+    <li class="nav-item">
+        <a class="nav-link" href="/">Users</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" href="/conf">Conferences</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/stat">2ch.hk Stats</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link disabled" href="#">Disabled</a>
+    </li>
+</ul>
+<br>
+<hr>
+<h4>{{ conf_info.title }} conference data</h4>
+<hr>
+<div class="card-columns">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Meta</h5>
+            <hr>
+            <p class="card-text">
+                <b>Title: </b>{{ conf_info.title }}<br>
+                <b>Telegram ID: </b>{{ conf_info.id }}<br>
+                <b>Firstly seen: </b>{{ conf_info.date }}<br>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
