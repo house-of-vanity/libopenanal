@@ -113,5 +113,53 @@
                 </table>
         </div>
     </div>
+
+</div>
+<div class="card text-center">
+    <div class="card-body">
+        <h5 class="card-title">Charts</h5>
+        <div id="words_chart">
+        </div>
+        <div id="messages_chart">
+        </div>
+        <script>
+            var user_id = {{ user_info.id }};
+            var plot_data = [];
+            $.ajax({
+                type: 'GET',
+                url: '/data',
+                data: { action: 'user_word_count', user: user_id },
+                dataType: 'json',
+                success: function (data) {
+                    plot_data[0] = data[0];
+                    write_plot()
+                }
+            });
+            $.ajax({
+                type: 'GET',
+                url: '/data',
+                data: { action: 'user_message_count', user: user_id },
+                dataType: 'json',
+                success: function (data) {
+                    plot_data[1] = data[0];
+                    write_plot()
+                }
+            });
+            function write_plot() {
+                var layout = {
+                    title: 'Words per day',
+                    showlegend: false,
+                    //autosize: false,
+                    //width: 500,
+                    //height: 500,
+                    margin: {
+                        t: 30,
+                        pad: 20
+                    },
+                };
+                Plotly.newPlot('words_chart', plot_data, layout, { displayModeBar: false });
+            }
+        </script>
+    </div>
 </div>
 {% endblock %}

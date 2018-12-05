@@ -153,6 +153,29 @@ class DataBase:
         }
         return conf_info
 
+    def get_user_word_count_per_day(self, user_id):
+        sql = """
+            SELECT count(*), 
+            date(date, 'unixepoch') as dt 
+            FROM relations r 
+            WHERE r.user_id = '%s' 
+            GROUP BY dt order by dt
+            """ % user_id
+        return self.execute(sql)
+
+    def get_user_message_count_per_day(self, user_id):
+        sql = """
+            SELECT count(dt), dt 
+            FROM(
+                SELECT count(date), 
+                date(date, 'unixepoch') as dt 
+                FROM relations WHERE 
+                user_id='%s' GROUP BY date
+                ) 
+            GROUP BY dt ORDER BY dt
+            """ % user_id
+        return self.execute(sql)
+
     def get_user_info(self, user_id):
         if not user_id.isdigit():
             return False

@@ -4,8 +4,7 @@ import os
 import requests
 import time
 
-from flask import Flask, request, send_from_directory
-from flask import render_template
+from flask import Flask, request, send_from_directory, jsonify, render_template
 
 from database import DataBase
 
@@ -139,6 +138,47 @@ def stat():
         threads=sorted_threads,
         now=datetime.datetime.now().strftime('%s'),
     )
+
+@app.route('/data', methods=['GET'])
+def data():
+    action = request.args.get('action', default=None, type=str)
+    if action == 'user_word_count':
+        user_id = request.args.get('user', default=None, type=str)
+        if user_id == None:
+            return jsonify([])
+        raw = db.get_user_word_count_per_day(user_id)
+        js = [
+            {
+                'type': 'scatter',
+                'mode': 'lines+markers',
+                'name': 'Words',
+                'x': [],
+                'y': []
+            }
+        ]
+        for day in raw:
+            js[0]['x'].append(day[1])
+            js[0]['y'].append(day[0])
+    elif action == 'user_message_count':
+        user_id = request.args.get('user', default=None, type=str)
+        if user_id == None:
+            return jsonify([])
+        raw = db.get_user_message_count_per_day(user_id)
+        js = [
+            {
+                'type': 'scatter',
+                'mode': 'lines+markers',
+                'name': 'Messages',
+                'x': [],
+                'y': []
+            }
+        ]
+        for day in raw:
+            js[0]['x'].append(day[1])
+            js[0]['y'].append(day[0])
+    else:
+        js = []
+    return jsonify(js)
 
 
 def main():
