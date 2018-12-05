@@ -68,6 +68,22 @@ def conf():
         confs=db.get_confs(),
         totals=totals)
 
+
+@app.route('/words')
+def words():
+    totals = {
+        'users': db.get_user_count(),
+        'words': db.get_word_count(),
+        'relations': db.get_relations_count(),
+        'confs': db.get_confs_count()
+    }
+
+    return render_template(
+        'conf.html',
+        confs=db.get_confs(),
+        totals=totals)
+
+
 @app.route('/overview/conf/<conf_id>')
 def conf_overview(conf_id):
 
