@@ -75,12 +75,15 @@ def conf_overview(conf_id):
         'conf_details.html',
         conf_info=db.get_conf_info(conf_id))
 
-@app.route('/overview/user/<user_id>')
+@app.route('/overview/user/<user_id>', methods=['GET'])
 def user_overview(user_id):
-
+    plot_type = request.args.get('plot_type', default='bar', type=str)
+    if plot_type not in ["bar", "scatter"]:
+        plot_type = "bar"
     return render_template(
         'user.html',
-        user_info=db.get_user_info(user_id))
+        user_info=db.get_user_info(user_id),
+        plot_type=plot_type)
 
 
 def get_threads(board):
@@ -144,13 +147,14 @@ def data():
     action = request.args.get('action', default=None, type=str)
     if action == 'user_word_count':
         user_id = request.args.get('user', default=None, type=str)
+        plot_type = request.args.get('plot_type', default='scatter', type=str)
         if user_id == None:
             return jsonify([])
         raw = db.get_user_word_count_per_day(user_id)
         js = [
             {
-                'type': 'scatter',
-                'mode': 'lines+markers',
+                'type': plot_type,
+                'mode': 'lines',
                 'name': 'Words',
                 'x': [],
                 'y': []
@@ -161,13 +165,14 @@ def data():
             js[0]['y'].append(day[0])
     elif action == 'user_message_count':
         user_id = request.args.get('user', default=None, type=str)
+        plot_type = request.args.get('plot_type', default='scatter', type=str)
         if user_id == None:
             return jsonify([])
         raw = db.get_user_message_count_per_day(user_id)
         js = [
             {
-                'type': 'scatter',
-                'mode': 'lines+markers',
+                'type': plot_type,
+                'mode': 'lines',
                 'name': 'Messages',
                 'x': [],
                 'y': []

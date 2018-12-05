@@ -115,39 +115,69 @@
     </div>
 
 </div>
-<div class="card text-center">
+<div class="card">
     <div class="card-body">
         <h5 class="card-title">Charts</h5>
+
+        <span class="badge {% if 'bar' == plot_type %} badge-primary {% endif %}" id="bar" onclick="plot_type_changer(this.id)">Bars</span>
+        <span class="badge {% if 'scatter' == plot_type %} badge-primary {% endif %}" id="scatter" onclick="plot_type_changer(this.id)">Lines</span>
         <div id="words_chart">
         </div>
-        <div id="messages_chart">
-        </div>
         <script>
+            function plot_type_changer(type="bar") {
+                location.href = URL_add_parameter(location.href, 'plot_type', type);
+            }
+            function URL_add_parameter(url, param, value) {
+                var hash = {};
+                var parser = document.createElement('a');
+
+                parser.href = url;
+
+                var parameters = parser.search.split(/\?|&/);
+
+                for (var i = 0; i < parameters.length; i++) {
+                    if (!parameters[i])
+                        continue;
+
+                    var ary = parameters[i].split('=');
+                    hash[ary[0]] = ary[1];
+                }
+
+                hash[param] = value;
+
+                var list = [];
+                Object.keys(hash).forEach(function (key) {
+                    list.push(key + '=' + hash[key]);
+                });
+
+                parser.search = '?' + list.join('&');
+                return parser.href;
+            }
             var user_id = {{ user_info.id }};
             var plot_data = [];
             $.ajax({
                 type: 'GET',
                 url: '/data',
-                data: { action: 'user_word_count', user: user_id },
+                data: { action: 'user_word_count', user: user_id, plot_type: "{{ plot_type }}" },
                 dataType: 'json',
                 success: function (data) {
                     plot_data[0] = data[0];
-                    write_plot()
+                    _write_plot();
                 }
             });
             $.ajax({
                 type: 'GET',
                 url: '/data',
-                data: { action: 'user_message_count', user: user_id },
+                data: { action: 'user_message_count', user: user_id, plot_type: "{{ plot_type }}" },
                 dataType: 'json',
                 success: function (data) {
                     plot_data[1] = data[0];
-                    write_plot()
+                    _write_plot();
                 }
             });
-            function write_plot() {
+            function _write_plot() {
                 var layout = {
-                    title: 'Words per day',
+                    title: 'Daily plot',
                     showlegend: false,
                     //autosize: false,
                     //width: 500,
