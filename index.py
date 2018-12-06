@@ -69,19 +69,22 @@ def conf():
         totals=totals)
 
 
-@app.route('/words')
+@app.route('/words', methods=['GET'])
 def words():
-    totals = {
-        'users': db.get_user_count(),
-        'words': db.get_word_count(),
-        'relations': db.get_relations_count(),
-        'confs': db.get_confs_count()
-    }
-
+    limit = request.args.get('limit', default=20, type=int)
+    page_number = request.args.get('page_number', default=1, type=int)
+    search = request.args.get('search', default="", type=str)
+    if search != "":
+        #page_number = 1
+        words=db.get_words(int(page_number)-1, limit=limit, search=search)
+    else:
+        words=db.get_words(int(page_number)-1, limit=limit)
     return render_template(
-        'conf.html',
-        confs=db.get_confs(),
-        totals=totals)
+        'words.html',
+        words=words,
+        page_number=int(page_number),
+        limit=limit,
+        search=search)
 
 
 @app.route('/overview/conf/<conf_id>')
@@ -209,6 +212,14 @@ def main():
 @app.template_filter('datetimeformat')
 def datetimeformat(value, format='%H:%M / %d-%m-%Y'):
     return datetime.datetime.fromtimestamp(value).strftime(format)
+
+@app.template_filter('shortener')
+def shortener(word, limit=20):
+    if len(word) > limit:
+        word = word[0:limit]+'...'
+    else:
+        pass
+    return word
 
 
 @app.template_filter('readable_delta')

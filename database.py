@@ -28,12 +28,6 @@ class DataBase:
         sql = "SELECT id FROM word WHERE word = '%s'" % word
         return self.execute(sql)[0][0]
 
-    '''
-    def get_memes(self, offset=0):
-        sql = "SELECT * FROM `meme` ORDER BY rowid DESC "
-        return self.execute(sql)
-    '''
-
     def get_user_count(self):
         sql = "SELECT count(*) FROM `user`"
         return self.execute(sql)[0]
@@ -114,6 +108,35 @@ class DataBase:
             ON t1.id = c.id
             GROUP BY c.id
         """
+        return self.execute(sql)
+
+    def get_words(self, page_number=0, limit=20, search=None):
+        offset = page_number * limit
+        if search == None:
+            sql = """
+                SELECT max(date(r.date, 'unixepoch')) as 'last seen',
+                min(date(r.date, 'unixepoch')) as 'first seen', 
+                w.word, count(r.word_id) as count, u.username, w.id
+                FROM `relations` r
+                LEFT JOIN `word` w ON w.id = r.word_id
+                LEFT JOIN `user` u ON u.id = r.user_id
+                GROUP BY r.word_id
+                ORDER BY count desc
+                LIMIT %s OFFSET %s
+                """ % (limit, offset)
+        else:
+            sql = """
+                SELECT max(date(r.date, 'unixepoch')) as 'last seen',
+                min(date(r.date, 'unixepoch')) as 'first seen', 
+                w.word, count(r.word_id) as count, u.username, w.id
+                FROM `relations` r
+                LEFT JOIN `word` w ON w.id = r.word_id
+                LEFT JOIN `user` u ON u.id = r.user_id
+                WHERE w.word like '%%%s%%'
+                GROUP BY r.word_id
+                ORDER BY count desc
+                LIMIT %s OFFSET %s
+                """ % (search, limit, offset)
         return self.execute(sql)
 
     def get_conf_info(self, conf_id):

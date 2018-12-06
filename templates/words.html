@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+{% block content %}
+{{ super() }}
+<ul class="nav nav-pills">
+    <li class="nav-item">
+        <a class="nav-link" href="/">Users</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/conf">Conferences</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" href="/words">Words</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/stat">2ch.hk Stats</a>
+    </li>
+    <!--
+    <li class="nav-item">
+        <a class="nav-link disabled" href="#">Disabled</a>
+    </li>-->
+</ul>
+<br>
+<div class="row">
+    <div class="col-sm">
+        <form action="/words" method="GET">
+            <div class="form-row">
+                <div class="col-sm-5 my-1">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">Limit</div>
+                        </div>
+                        <input type="number" min="1" max="1000" class="form-control" id='limit' name="limit" value="{{ limit }}">
+                    </div>
+                </div>
+                <div class="col-auto my-1">
+                    <button type="submit" class="btn btn-primary">✔</button>
+                </div>
+            </div>
+    </div>
+    <div class="col-sm">
+            <div class="form-row">
+                <div class="col-auto my-1">
+                    <button type="button" class="btn btn-primary" onclick='scroll_page(parseInt(document.getElementById ( "page_counter" ).value, 10)-1)'>🡄</button>
+                </div>
+
+                <div class="col-sm-3 my-1">
+                    <input type="number" min="1" class="form-control" name="page_number" id="page_counter" value="{{ page_number }}">
+                </div>
+                <div class="col-auto my-1">
+                    <button type="button" class="btn btn-primary" onclick='scroll_page(parseInt(document.getElementById ( "page_counter" ).value, 10)+1)'>🡆</button>
+                </div>
+            </div>
+    </div>
+    <div class="col-sm">
+            <div class="form-row">
+                <div class="col-sm-9 my-1">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">Search</div>
+                        </div>
+                        <input type="text" class="form-control" name="search" value="{{ search }}">
+                    </div>
+                </div>
+                <div class="col-auto my-1">
+                    <button type="submit" class="btn btn-primary">🡆</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<table class="table table-hover table-sm">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Word</th>
+            <th scope="col">id</th>
+            <th scope="col">Added</th>
+            <th scope="col">Last seen</th>
+            <th scope="col">Said</th>
+            <th scope="col">Added by</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for word in words %}
+        <tr>
+            <th scope="row">{{ loop.index + limit * (page_number-1) }}</th>
+            <td><div class="col-2"><a href="/overview/word/{{word.4}}">{{ word.2|shortener() }}</a></div></td>
+            <td><a class="badge badge-dark " href="/overview/word/{{word.4}}">{{ word.5 }}</a></td>
+            <td>{{ word.1 }}</td>
+            <td>{{ word.0 }}</td>
+            <td>{{ word.3 }}</td>
+            <td>{{ word.4 }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+    function scroll_page(page) {
+        location.href = URL_add_parameter(location.href, 'page_number', page);
+    }
+    function change_limit(limit) {
+        location.href = URL_add_parameter(location.href, 'limit', limit);
+    }
+    function start_search(word) {
+        location.href = URL_add_parameter(location.href, 'search', word);
+    }
+    function URL_add_parameter(url, param, value) {
+        var hash = {};
+        var parser = document.createElement('a');
+
+        parser.href = url;
+
+        var parameters = parser.search.split(/\?|&/);
+
+        for (var i = 0; i < parameters.length; i++) {
+            if (!parameters[i])
+                continue;
+
+            var ary = parameters[i].split('=');
+            hash[ary[0]] = ary[1];
+        }
+
+        hash[param] = value;
+
+        var list = [];
+        Object.keys(hash).forEach(function (key) {
+            list.push(key + '=' + hash[key]);
+        });
+
+        parser.search = '?' + list.join('&');
+        return parser.href;
+    }
+</script>
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+{% endblock %}

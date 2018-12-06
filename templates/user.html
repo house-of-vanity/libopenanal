@@ -12,10 +12,10 @@
         <a class="nav-link" href="/conf">Conferences</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="/stat">2ch.hk Stats</a>
+        <a class="nav-link" href="/words">Words</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link disabled" href="#">Disabled</a>
+        <a class="nav-link" href="/stat">2ch.hk Stats</a>
     </li>
 </ul>
 <br>
@@ -46,7 +46,7 @@
                 <b>First message: </b>{{ user_info.first_date }}<br>
                 <b>Last message: </b>{{ user_info.last_message }}<br>
                 <b>Days known: </b>{{ user_info.day_known }}<br>
-                <b>Word said: </b>{{ user_info.word_count }}<br>
+                <b>Words said: </b>{{ user_info.word_count }}<br>
                 <b>Messages sent: </b>{{ user_info.messages }}<br>
                 <b>Words per day: </b>{{ '%0.2f'| format((user_info.word_count / user_info.day_known)|float) }}<br>
                 <b>Words per message: </b>~{{ '%0.2f'| format(user_info.avg|float) }}<br>
