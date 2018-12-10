@@ -75,7 +75,6 @@ def words():
     page_number = request.args.get('page_number', default=1, type=int)
     search = request.args.get('search', default="", type=str)
     if search != "":
-        #page_number = 1
         words=db.get_words(int(page_number)-1, limit=limit, search=search)
     else:
         words=db.get_words(int(page_number)-1, limit=limit)
